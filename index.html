@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>З 8 Березня, Тетяно! 💐</title>
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💐</text></svg>" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;0,700;1,400&family=Source+Sans+3:ital,wght@0,300;0,400;0,600;0,700&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.2/dist/confetti.browser.min.js"></script>
+  <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+  <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            blush: '#FFF0F5',
+            cream: '#FFFDD0',
+            gold: '#C9A227',
+            rose: '#E8A0BF',
+            roseDark: '#C71585',
+          },
+          fontFamily: {
+            display: ['Lora', 'Georgia', 'serif'],
+            body: ['Source Sans 3', 'system-ui', 'sans-serif'],
+          },
+        },
+      },
+    };
+  </script>
+  <style>
+    * { box-sizing: border-box; }
+    html {
+      scroll-behavior: smooth;
+      height: 100%;
+    }
+    body {
+      font-family: 'Source Sans 3', system-ui, sans-serif;
+      background: #fceef2;
+      min-height: 100%;
+      overflow: hidden;
+      height: 100%;
+    }
+    .scroll-container {
+      position: relative;
+      z-index: 1;
+      height: 100vh;
+      height: 100dvh;
+      overflow-y: auto;
+      overflow-x: hidden;
+      scroll-snap-type: y mandatory;
+      scroll-snap-stop: always;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+    .scroll-container::-webkit-scrollbar { display: none; }
+    .snap-screen {
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      min-height: 100vh;
+      min-height: 100dvh;
+    }
+    .font-display { font-family: 'Lora', Georgia, serif; }
+    .gradient-text {
+      background: linear-gradient(135deg, #a01360 0%, #C71585 35%, #c9982e 65%, #E8A0BF 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      letter-spacing: 0.02em;
+    }
+    .envelope-wrap {
+      cursor: pointer;
+      perspective: 1000px;
+      transition: transform 0.3s ease;
+    }
+    .envelope-wrap:hover { transform: scale(1.04); }
+    .envelope {
+      position: relative;
+      width: 260px;
+      height: 160px;
+      transform-style: preserve-3d;
+      margin-left: auto;
+      margin-right: auto;
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+      background: linear-gradient(160deg, #fff5f8 0%, #ffe8f0 50%, #fce4ec 100%);
+    }
+    .envelope-front {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 3;
+      pointer-events: none;
+    }
+    .envelope-flap {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      margin-left: -130px;
+      width: 0;
+      height: 0;
+      border-left: 130px solid transparent;
+      border-right: 130px solid transparent;
+      border-bottom: 76px solid transparent;
+      border-top: 84px solid #fce4ec;
+      transform-origin: top center;
+      transform-style: preserve-3d;
+      transform: rotateX(0deg);
+      transition: transform 0.45s ease, z-index 0.5s;
+      z-index: 5;
+    }
+    .envelope-wrap.open .envelope-flap {
+      transform: rotateX(180deg);
+      z-index: 1;
+    }
+    .envelope-pocket {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      margin-left: -130px;
+      width: 0;
+      height: 0;
+      border-left: 130px solid #ffe8f0;
+      border-right: 130px solid #ffe8f0;
+      border-bottom: 84px solid #ffecf0;
+      border-top: 84px solid transparent;
+      border-bottom-left-radius: 8px;
+      border-bottom-right-radius: 8px;
+      z-index: 2;
+    }
+    #reveal-block {
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    #reveal-block.hidden {
+      opacity: 0;
+      pointer-events: none;
+      transform: scale(0.95);
+      min-height: 0;
+      height: 0;
+      overflow: hidden;
+      padding: 0;
+      margin: 0;
+    }
+    #message-block { opacity: 0; transform: translateY(20px); }
+    #message-block.visible {
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity 0.8s ease 0.3s, transform 0.8s ease 0.3s;
+    }
+    .typewriter-cursor::after {
+      content: '|';
+      animation: blink 0.8s step-end infinite;
+      color: #C71585;
+    }
+    @keyframes blink { 50% { opacity: 0; } }
+    @keyframes sway {
+      0%, 100% { transform: rotate(-2deg); }
+      50% { transform: rotate(2deg); }
+    }
+    .sway { animation: sway 4s ease-in-out infinite; }
+    .fade-in { animation: fadeIn 0.8s ease forwards; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .photo-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 0.75rem;
+      max-width: 480px;
+      margin: 0 auto;
+    }
+    @media (min-width: 640px) {
+      .photo-grid { grid-template-columns: repeat(3, 1fr); max-width: 560px; gap: 1rem; }
+    }
+    .photo-grid-our {
+      grid-template-columns: 1fr;
+      max-width: 260px;
+      gap: 0.75rem;
+    }
+    .photo-grid-our .grid-item {
+      max-height: 28vh;
+      aspect-ratio: 1;
+    }
+    .photo-grid-our .grid-item img {
+      object-fit: cover;
+    }
+    @media (min-width: 640px) {
+      .photo-grid-our { max-width: 320px; gap: 1rem; }
+      .photo-grid-our .grid-item { max-height: 22vh; }
+    }
+    .photo-grid .grid-item {
+      aspect-ratio: 1;
+      min-height: 100px;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 6px 20px rgba(199, 21, 133, 0.1);
+      background: linear-gradient(145deg, #fff8fa 0%, #ffe8f0 100%);
+    }
+    .photo-grid .grid-item img {
+      width: 100%;
+      height: 100%;
+      min-height: 100%;
+      object-fit: cover;
+      display: block;
+      background: #fff5f8;
+    }
+    .photo-grid .grid-item img.placeholder { opacity: 0.5; object-fit: contain; padding: 1rem; }
+    .card-section {
+      padding: 2.5rem 1.5rem;
+    }
+    .matte-bg {
+      background: #fdf2f6;
+      padding: 1.75rem 1.5rem;
+      border-radius: 20px;
+      max-width: 90%;
+    }
+    @media (min-width: 640px) {
+      .matte-bg { padding: 2rem 2.25rem; max-width: 560px; }
+    }
+    @media (min-width: 640px) {
+      .card-section { padding: 3.5rem 2rem; }
+    }
+    .blockquote-text { letter-spacing: 0.01em; line-height: 1.5; }
+    .btn-cta {
+      background: linear-gradient(135deg, #b81a6b 0%, #d64d96 50%, #E8A0BF 100%);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      border: none;
+    }
+    .btn-cta:hover {
+      transform: scale(1.02);
+      box-shadow: 0 10px 28px rgba(199, 21, 133, 0.28);
+    }
+    .btn-heart {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      border: none;
+      background: linear-gradient(135deg, #b81a6b 0%, #d64d96 50%, #E8A0BF 100%);
+      box-shadow: 0 8px 28px rgba(199, 21, 133, 0.3);
+      font-size: 56px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+    .btn-heart:hover {
+      transform: scale(1.08);
+      box-shadow: 0 12px 32px rgba(199, 21, 133, 0.35);
+    }
+    #heart-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(255,240,245,0.98);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 50;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.5s ease;
+    }
+    #heart-overlay.visible {
+      opacity: 1;
+      pointer-events: auto;
+    }
+    #heart-overlay .heart-icon {
+      font-size: min(40vw, 200px);
+      animation: heartPulse 0.8s ease infinite;
+    }
+    @keyframes heartPulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.1); }
+    }
+    #flowers-bg {
+      position: fixed;
+      inset: 0;
+      z-index: 0;
+      pointer-events: none;
+      overflow: hidden;
+    }
+    .flower-emoji {
+      position: absolute;
+      font-size: clamp(22px, 4.5vw, 38px);
+      opacity: 0.75;
+      will-change: transform;
+    }
+    .flower-emoji.path1 { animation: flowerPath1 18s ease-in-out infinite; }
+    .flower-emoji.path2 { animation: flowerPath2 22s ease-in-out infinite; }
+    .flower-emoji.path3 { animation: flowerPath3 20s ease-in-out infinite; }
+    .flower-emoji.path4 { animation: flowerPath4 25s ease-in-out infinite; }
+    .flower-emoji.path5 { animation: flowerPath5 19s ease-in-out infinite; }
+    .flower-emoji.path6 { animation: flowerPath6 21s ease-in-out infinite; }
+    .flower-emoji.path7 { animation: flowerPath7 23s ease-in-out infinite; }
+    .flower-emoji.path8 { animation: flowerPath8 17s ease-in-out infinite; }
+    #flowers-bg.fast .flower-emoji.path1 { animation-duration: 5s; }
+    #flowers-bg.fast .flower-emoji.path2 { animation-duration: 6s; }
+    #flowers-bg.fast .flower-emoji.path3 { animation-duration: 5.5s; }
+    #flowers-bg.fast .flower-emoji.path4 { animation-duration: 6.5s; }
+    #flowers-bg.fast .flower-emoji.path5 { animation-duration: 5s; }
+    #flowers-bg.fast .flower-emoji.path6 { animation-duration: 5.5s; }
+    #flowers-bg.fast .flower-emoji.path7 { animation-duration: 6s; }
+    #flowers-bg.fast .flower-emoji.path8 { animation-duration: 5s; }
+    @keyframes flowerPath1 {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(35px, -28px) rotate(8deg); }
+      50% { transform: translate(-25px, 20px) rotate(-5deg); }
+      75% { transform: translate(20px, 30px) rotate(3deg); }
+    }
+    @keyframes flowerPath2 {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      33% { transform: translate(-40px, 15px) rotate(-10deg); }
+      66% { transform: translate(30px, -35px) rotate(6deg); }
+    }
+    @keyframes flowerPath3 {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(-20px, -40px) rotate(12deg); }
+    }
+    @keyframes flowerPath4 {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(45px, 20px) rotate(-8deg); }
+      50% { transform: translate(-35px, -25px) rotate(5deg); }
+      75% { transform: translate(-15px, 35px) rotate(-3deg); }
+    }
+    @keyframes flowerPath5 {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(25px, 25px) rotate(15deg); }
+    }
+    @keyframes flowerPath6 {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      33% { transform: translate(-30px, -25px) rotate(-7deg); }
+      66% { transform: translate(40px, 15px) rotate(10deg); }
+    }
+    @keyframes flowerPath7 {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      25% { transform: translate(20px, -35px) rotate(5deg); }
+      50% { transform: translate(-40px, 10px) rotate(-12deg); }
+      75% { transform: translate(-10px, 30px) rotate(8deg); }
+    }
+    @keyframes flowerPath8 {
+      0%, 100% { transform: translate(0, 0) rotate(0deg); }
+      50% { transform: translate(-25px, 30px) rotate(-15deg); }
+    }
+  </style>
+</head>
+<body class="text-gray-800 antialiased">
+  <div id="flowers-bg" aria-hidden="true"></div>
+  <div class="scroll-container" id="scroll-container">
+  <section id="reveal-block" class="snap-screen flex flex-col items-center justify-center card-section">
+    <div class="matte-bg flex flex-col items-center">
+      <p class="font-display text-xl md:text-2xl text-roseDark/90 text-center mb-8 max-w-md fade-in">
+        Для тебе в цей весняний день...
+      </p>
+      <div class="envelope-wrap sway" id="envelope-wrap" role="button" tabindex="0" aria-label="Відкрити лист">
+        <div class="envelope">
+          <div class="envelope-front">
+            <div class="envelope-flap"></div>
+          </div>
+          <div class="envelope-pocket"></div>
+        </div>
+      </div>
+      <p class="mt-6 text-sm text-gray-500 font-body">Натисни на конверт</p>
+    </div>
+  </section>
+
+  <section id="message-block" class="snap-screen flex flex-col items-center justify-center card-section">
+    <div class="matte-bg text-center">
+      <h1 class="font-display text-4xl md:text-5xl font-bold gradient-text text-center mb-4">
+        З 8 Березня!
+      </h1>
+      <div class="max-w-xl text-center space-y-5 mx-auto">
+        <p id="typewriter" class="text-lg md:text-xl text-gray-700 leading-relaxed min-h-[4em]"></p>
+        <blockquote id="blockquote-text" class="blockquote-text border-l-4 border-rose pl-4 py-3 pr-3 bg-white/70 rounded-r-xl italic text-roseDark/90 shadow-sm">
+          «Твоя щирість — це те, що справді надихає.»
+        </blockquote>
+      </div>
+    </div>
+  </section>
+
+  <section id="for-her-block" class="snap-screen flex flex-col items-center justify-center card-section">
+    <div class="matte-bg flex flex-col items-center">
+      <p class="font-body text-roseDark/80 text-sm uppercase tracking-widest mb-2">Для тебе</p>
+      <h2 class="font-display text-2xl md:text-3xl font-semibold gradient-text text-center mb-2">
+        Ти в кожному кадрі
+      </h2>
+      <div class="photo-grid" id="photo-grid-her"></div>
+    </div>
+  </section>
+
+  <section id="memory-block" class="snap-screen flex flex-col items-center justify-center card-section">
+    <div class="matte-bg flex flex-col items-center">
+      <p class="font-body text-roseDark/80 text-sm uppercase tracking-widest mb-2">Разом</p>
+      <h2 class="font-display text-2xl md:text-3xl font-semibold gradient-text text-center mb-6">
+        Наші спільні миті
+      </h2>
+      <div class="photo-grid photo-grid-our" id="photo-grid-our"></div>
+    </div>
+  </section>
+
+  <section id="cta-block" class="snap-screen flex flex-col items-center justify-center card-section">
+    <div class="matte-bg flex flex-col items-center gap-6">
+      <button type="button" id="hug-btn" class="btn-heart" aria-label="Лайк">
+        ❤️
+      </button>
+    </div>
+  </section>
+  </div>
+
+  <div id="heart-overlay" aria-hidden="true">
+    <span class="heart-icon" aria-hidden="true">❤️</span>
+  </div>
+
+  <audio id="bg-music" loop preload="auto" aria-label="Фонова музика">
+    <source src="audio/background.mp3" type="audio/mpeg">
+    <source src="audio/background.ogg" type="audio/ogg">
+  </audio>
+
+  <script>
+    (function () {
+      var PHOTOS_HER_DIR = 'photos/her/';
+      var PHOTOS_OUR_DIR = 'photos/our/';
+      var PLACEHOLDER_SVG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='48' fill='%23E8A0BF'%3E💐%3C/text%3E%3C/svg%3E";
+      var HER_PHOTO_FILES = ['her_01.jpg', 'her_02.jpg', 'her_03.jpg', 'her_04.jpg', 'her_05.jpg', 'her_06.jpg', 'her_07.jpg', 'her_08.jpg'];
+      var OUR_PHOTO_FILES = ['our_01.jpg', 'our_02.jpg', 'our_03.jpg'];
+      function renderPhotoGrid(containerId, files, folder) {
+        var el = document.getElementById(containerId);
+        if (!el) return;
+        folder = folder || PHOTOS_HER_DIR;
+        files.forEach(function (file) {
+          var div = document.createElement('div');
+          div.className = 'grid-item';
+          var img = document.createElement('img');
+          img.src = folder + file;
+          img.alt = '';
+          img.loading = 'lazy';
+          img.onerror = function () { this.onerror = null; this.classList.add('placeholder'); this.src = PLACEHOLDER_SVG; };
+          div.appendChild(img);
+          el.appendChild(div);
+        });
+      }
+      const REVEAL = document.getElementById('reveal-block');
+      const MESSAGE = document.getElementById('message-block');
+      const ENVELOPE = document.getElementById('envelope-wrap');
+      const TYPEWRITER = document.getElementById('typewriter');
+      const HUG_BTN = document.getElementById('hug-btn');
+      const HEART_OVERLAY = document.getElementById('heart-overlay');
+      const BG_MUSIC = document.getElementById('bg-music');
+
+      function startBgMusic() {
+        if (!BG_MUSIC) return;
+        BG_MUSIC.volume = 0.4;
+        BG_MUSIC.play().catch(function () {});
+      }
+      document.addEventListener('click', function once() {
+        startBgMusic();
+        document.removeEventListener('click', once);
+      }, { once: true });
+      document.addEventListener('touchstart', function once() {
+        startBgMusic();
+        document.removeEventListener('touchstart', once);
+      }, { once: true });
+
+      // Шаблон: заміни на свій текст привітання (буде з’являтися по буквах)
+      const GREETING = 'Бажаю сонячних днів, приємних сюрпризів та якомога більше позитивних моментів. Нехай кожен день буде в радість.';
+
+      function confettiBurst() {
+        const count = 120;
+        const defaults = { origin: { y: 0.7 }, colors: ['#C71585', '#E8A0BF', '#C9A227', '#FFF0F5', '#FFD700'] };
+        function fire(particleRatio, opts) {
+          confetti(Object.assign({}, defaults, opts, {
+            particleCount: Math.floor(count * particleRatio),
+          }));
+        }
+        fire(0.25, { spread: 26, startVelocity: 55 });
+        fire(0.2, { spread: 60 });
+        fire(0.35, { spread: 100, decay: 0.91, scalar: 0.8 });
+        fire(0.1, { spread: 120, startVelocity: 25, decay: 0.92, scalar: 1.2 });
+        fire(0.1, { spread: 120, startVelocity: 45 });
+      }
+
+      function openEnvelope() {
+        ENVELOPE.classList.add('open');
+        setTimeout(confettiBurst, 400);
+        setTimeout(function () {
+          envelopeOpened = true;
+          REVEAL.classList.add('hidden');
+          MESSAGE.classList.add('visible');
+          MESSAGE.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          setTimeout(function () { typeWriter(); }, 600);
+          setTimeout(function () { currentSlide = 1; }, 500);
+        }, 1200);
+      }
+
+      const CONTAINER = document.getElementById('scroll-container');
+      const SECTIONS = Array.prototype.slice.call(CONTAINER.querySelectorAll('section'));
+      let currentSlide = 0;
+      let envelopeOpened = false;
+
+      function updateSlideFromScroll() {
+        var st = CONTAINER.scrollTop;
+        for (var i = SECTIONS.length - 1; i >= 0; i--) {
+          if (SECTIONS[i].offsetTop <= st + 80) { currentSlide = i; return; }
+        }
+        currentSlide = 0;
+      }
+      CONTAINER.addEventListener('scroll', updateSlideFromScroll, { passive: true });
+
+      CONTAINER.addEventListener('click', function (e) {
+        if (!envelopeOpened) return;
+        if (e.target.closest('#envelope-wrap') || e.target.closest('#hug-btn')) return;
+        currentSlide = (currentSlide + 1) % SECTIONS.length;
+        SECTIONS[currentSlide].scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+
+      ENVELOPE.addEventListener('click', function (e) { e.stopPropagation(); openEnvelope(); });
+      ENVELOPE.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          openEnvelope();
+        }
+      });
+
+      // Typewriter
+      let i = 0;
+      function typeWriter() {
+        if (i < GREETING.length) {
+          TYPEWRITER.classList.add('typewriter-cursor');
+          TYPEWRITER.textContent += GREETING.charAt(i);
+          i++;
+          setTimeout(typeWriter, 50);
+        } else {
+          TYPEWRITER.classList.remove('typewriter-cursor');
+        }
+      }
+      var FLOWERS = ['💐', '🌸', '🌷', '🌺', '🌼', '🪷', '💮', '🌻'];
+      var PATHS = ['path1', 'path2', 'path3', 'path4', 'path5', 'path6', 'path7', 'path8'];
+      var flowersContainer = document.getElementById('flowers-bg');
+      function createFlowers() {
+        if (!flowersContainer) return;
+        var positions = [
+          [5, 8], [18, 14], [32, 6], [48, 12], [65, 8], [82, 10], [92, 18], [8, 28],
+          [25, 22], [42, 26], [58, 24], [75, 30], [88, 25], [12, 42], [35, 38], [52, 44],
+          [68, 40], [85, 46], [6, 58], [22, 54], [45, 60], [62, 56], [78, 62], [92, 55],
+          [15, 72], [38, 78], [55, 74], [72, 80], [88, 70], [8, 88], [28, 85], [50, 90],
+          [70, 86], [90, 92]
+        ];
+        positions.forEach(function (pos, i) {
+          var el = document.createElement('span');
+          el.className = 'flower-emoji ' + PATHS[i % PATHS.length];
+          el.textContent = FLOWERS[i % FLOWERS.length];
+          el.style.left = pos[0] + '%';
+          el.style.top = pos[1] + '%';
+          el.style.animationDelay = (i * 0.12) + 's';
+          flowersContainer.appendChild(el);
+        });
+      }
+      function speedUpFlowers() {
+        if (!flowersContainer) return;
+        flowersContainer.classList.add('fast');
+        clearTimeout(flowersContainer._speedTimeout);
+        flowersContainer._speedTimeout = setTimeout(function () {
+          flowersContainer.classList.remove('fast');
+        }, 7000);
+      }
+      document.addEventListener('click', speedUpFlowers, true);
+      document.addEventListener('DOMContentLoaded', function () {
+        createFlowers();
+        renderPhotoGrid('photo-grid-her', HER_PHOTO_FILES, PHOTOS_HER_DIR);
+        renderPhotoGrid('photo-grid-our', OUR_PHOTO_FILES, PHOTOS_OUR_DIR);
+        if (typeof AOS !== 'undefined') AOS.init({ duration: 800, offset: 80, once: true });
+      });
+
+      HUG_BTN.addEventListener('click', function (e) {
+        e.stopPropagation();
+        HEART_OVERLAY.classList.add('visible');
+        confettiBurst();
+        setTimeout(function () {
+          HEART_OVERLAY.classList.remove('visible');
+          var prev = SECTIONS[Math.max(0, SECTIONS.length - 2)];
+          if (prev) prev.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 3000);
+      });
+
+    })();
+  </script>
+</body>
+</html>
